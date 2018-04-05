@@ -3,7 +3,7 @@
  
  ## <a name="what-you-build"></a> What you’ll build 
  
- In this example you will you Ballerina to invoke an remote service. 
+ In this example you will use Ballerina to invoke an remote service. 
   
  ## <a name="pre-req"></a> Prerequisites
  - JDK 1.8 or later
