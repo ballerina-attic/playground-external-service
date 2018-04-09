@@ -14,7 +14,7 @@ service<http:Service> time bind listener {
         path: "/",  methods: ["GET"]
     }
     sayHello (endpoint caller, http:Request request) {
-        http:Response response = {};
+        http:Response response = new;
         time:Time currentTime = time:currentTime();
         string customTimeString = currentTime.format("yyyy-MM-dd'T'HH:mm:ss");
 
