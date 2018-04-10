@@ -1,7 +1,7 @@
 import ballerina/http;
 import ballerina/io;
 
-endpoint http:ServiceEndpoint listener {
+endpoint http:Listener listener {
     port:9090
 };
 
@@ -18,7 +18,7 @@ service<http:Service> timeInfo bind listener {
 
         // Client endpoints represent remote network location
         // This endpoint is reachable within code
-        endpoint http:SimpleClientEndpoint timeServiceEP {
+        endpoint http:SimpleClient timeServiceEP {
             url:"http://localhost:9095"
         };
 
@@ -26,12 +26,12 @@ service<http:Service> timeInfo bind listener {
         // -> indicates request is sent over the network
         // =? either assigns response or if there is an error
         //    then generates a function error
-        http:Response response =?
-             timeServiceEP -> get("/localtime", {});
+        http:Response response = check
+                                 timeServiceEP -> get("/localtime", new);
 
         // json and xml are primitive data types!
         // The '.' syntax is used for invoking local functions
-        json time =? response.getJsonPayload();
+        json time = check response.getJsonPayload();
 
         // json objects can be defined inline
         // json keys and objects do not require escaping
@@ -42,7 +42,7 @@ service<http:Service> timeInfo bind listener {
                        };
 
         response.setJsonPayload(payload);
-        _ = caller -> forward(response);
+        _ = caller -> respond(response);
 
     }
 }
