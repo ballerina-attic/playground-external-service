@@ -18,7 +18,7 @@ service<http:Service> timeInfo bind listener {
 
         // Client endpoints represent remote network location.
         // This endpoint is reachable within code.
-        endpoint http:SimpleClient timeServiceEP {
+        endpoint http:Client timeServiceEP {
             url:"http://localhost:9095"
         };
 
@@ -27,7 +27,7 @@ service<http:Service> timeInfo bind listener {
         // 'check' assigns response or if there is an error
         //  then generates a function error.
         http:Response response = check
-                     timeServiceEP -> get("/localtime", new);
+                     timeServiceEP -> get("/localtime");
 
         // json and xml are primitive data types!.
         // The '.' syntax is used for invoking local functions.
