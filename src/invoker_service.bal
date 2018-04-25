@@ -27,8 +27,7 @@ service<http:Service> timeInfo bind listener {
         // 'check' assigns response or if there is an error
         //  then generates a function error.
         http:Response response = check
-                     timeServiceEP -> get("/localtime"
-                         , request = req);
+                     timeServiceEP -> get("/localtime");
 
         // json and xml are primitive data types!.
         // The '.' syntax is used for invoking local functions.
