@@ -16,8 +16,10 @@ service<http:Service> timeInfo bind listener {
     }
     getTime (endpoint caller, http:Request req) {
 
-        // Client endpoints represent remote network location.
-        // This endpoint is reachable within code.
+        // You can define an endpoint to an external service.
+        // This endpoint will instantiate an HTTP connector.
+        // 'timeServiceEP' becomes reusable object in the code
+        // body.
         endpoint http:Client timeServiceEP {
             url:"http://localhost:9095"
         };
