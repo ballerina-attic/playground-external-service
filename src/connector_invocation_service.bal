@@ -42,7 +42,7 @@ service<http:Service> timeInfo bind listener {
                            source: "Ballerina",
                            time: time
                        };
-        response.setJsonPayload(payload);
+        response.setJsonPayload(untaint payload);
         _ = caller -> respond(response);
     }
 }
