@@ -18,8 +18,8 @@ service<http:Service> timeInfo bind listener {
 
         // You can define an endpoint to an external service.
         // This endpoint will instantiate an HTTP connector.
-        // 'timeServiceEP' becomes reusable object in the code
-        // body.
+        // 'timeServiceEP' becomes reusable object in the
+        // code body.
         endpoint http:Client timeServiceEP {
             url:"http://localhost:9095"
         };
@@ -32,7 +32,8 @@ service<http:Service> timeInfo bind listener {
                      timeServiceEP -> get("/localtime");
 
         // json and xml are primitive data types!.
-        // The '.' syntax is used for invoking local functions.
+        // The '.' syntax is used for invoking local
+        // functions.
         json time = check response.getJsonPayload();
 
         // json objects can be defined inline.
