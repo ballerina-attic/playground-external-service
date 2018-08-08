@@ -2,26 +2,26 @@ import ballerina/http;
 import ballerina/io;
 
 endpoint http:Listener listener {
-    port:9090
+    port: 9090
 };
 
 @http:ServiceConfig {
-    basePath:"/time"
+    basePath: "/time"
 }
 service<http:Service> timeInfo bind listener {
 
     @http:ResourceConfig {
-        methods:["GET"],
-        path:"/"
+        methods: ["GET"],
+        path: "/"
     }
-    getTime (endpoint caller, http:Request req) {
+    getTime(endpoint caller, http:Request req) {
 
         // You can define an endpoint to an external service.
         // This endpoint will instantiate an HTTP connector.
         // 'timeServiceEP' becomes reusable object in the
         // code body.
         endpoint http:Client timeServiceEP {
-            url:"http://localhost:9095"
+            url: "http://localhost:9095"
         };
 
         // Invoke 'get' resource at timeServiceEP endpoint.
@@ -40,10 +40,10 @@ service<http:Service> timeInfo bind listener {
         // json keys and objects do not require escaping.
         // json objects can use variables and functions.
         json payload = {
-                           source: "Ballerina",
-                           time: time
-                       };
+            source: "Ballerina",
+            time: time
+        };
         response.setJsonPayload(untaint payload);
-        _ = caller -> respond(response);
+        _ = caller->respond(response);
     }
 }
