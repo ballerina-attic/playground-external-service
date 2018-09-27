@@ -7,7 +7,6 @@
 In this example you will use Ballerina to invoke an remote service. 
  
 ## <a name="pre-req"></a> Prerequisites
-- JDK 1.8 or later
 - [Ballerina Distribution](https://github.com/ballerina-lang/ballerina/blob/master/docs/quick-tour.md)
 - A Text Editor or an IDE 
 
