@@ -39,14 +39,18 @@ service timeInfo on ep {
                 };
                 _ = caller->respond(untaint payload);
             } else if (returnValue is error) {
-                //Panicking inside a resource sends a 500 status
-                //response to the caller with the error details.
-                panic returnValue;
+                sendErrorResponse(caller, returnValue);
             }
         } else if (result is error) {
-            //Panicking inside a resource sends a 500 status
-            //response to the caller with the error details.
-            panic result;
+            sendErrorResponse(caller, result);
         }
     }
+}
+
+//Send the error response to the client.
+function sendErrorResponse(http:Caller caller, error result) {
+    http:Response res = new;
+    res.statusCode = 500;
+    res.setPayload(untaint string.convert(result.detail().message));
+    _ = caller->respond(res);
 }
