@@ -5,21 +5,20 @@ import ballerina/time;
 
 // ***** This service acts as a backend and is not exposed via playground samples ******
 
-endpoint http:Listener listener {
-    port: 9095
-};
+listener http:Listener ep = new(9095);
+
 @http:ServiceConfig { basePath: "/localtime" }
-service<http:Service> time bind listener {
+service timeService on ep {
     @http:ResourceConfig {
         path: "/", methods: ["GET"]
     }
-    sayHello(endpoint caller, http:Request request) {
+    resource function sayHello(http:Caller caller, http:Request request) {
         http:Response response = new;
         time:Time currentTime = time:currentTime();
         string customTimeString = currentTime.format("yyyy-MM-dd'T'HH:mm:ss");
 
         json timeJ = { currentTime: customTimeString };
-        response.setJsonPayload(timeJ);
+        response.setPayload(timeJ);
         _ = caller->respond(response);
     }
 }
