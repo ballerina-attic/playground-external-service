@@ -12,7 +12,8 @@ service timeInfo on ep {
         methods: ["GET"],
         path: "/"
     }
-    resource function getTime(http:Caller caller, http:Request req) {
+    resource function getTime(http:Caller caller, http:Request req)
+                                                    returns error? {
 
         // You can define an endpoint to an external service. This
         // endpoint instantiates an HTTP client endpoint.
@@ -22,35 +23,22 @@ service timeInfo on ep {
 
         // Invoke the 'get' resource against the 'timeServiceEP'
         // endpoint. '->' indicates request is over a network.
-        // Returned result can either be an http response or an
-        // error.
-        var result = timeServiceEP->get("/localtime");
-        if (result is http:Response) {
-            // json and xml are primitive data types! The '.' syntax
-            // is used for invoking local functions.
-            var returnValue = result.getJsonPayload();
-            if (returnValue is json) {
-                // json objects can be defined inline. json keys and
-                // objects do not require escaping. json objects can use
-                // other variables and functions.
-                json payload = {
-                    source: "Ballerina",
-                    time: returnValue
-                };
-                _ = caller->respond(untaint payload);
-            } else if (returnValue is error) {
-                sendErrorResponse(caller, returnValue);
-            }
-        } else if (result is error) {
-            sendErrorResponse(caller, result);
-        }
-    }
-}
+        // If an error is returned, resource function gets returned
+        // with that error which eventually is sent to the caller.
+        http:Response response = check timeServiceEP->get("/localtime");
 
-//Send the error response to the client.
-function sendErrorResponse(http:Caller caller, error result) {
-    http:Response res = new;
-    res.statusCode = 500;
-    res.setPayload(untaint string.convert(result.detail().message));
-    _ = caller->respond(res);
+        // json and xml are primitive data types. The '.' syntax
+        // is used for invoking local functions.
+        json returnValue = check response.getJsonPayload();
+
+        // json objects can be defined inline. json keys and
+        // objects do not require escaping. json objects can use
+        // other variables and functions.
+        json payload = {
+            source: "Ballerina",
+            time: returnValue
+        };
+        _ = caller->respond(untaint payload);
+        return;
+    }
 }
