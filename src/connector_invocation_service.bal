@@ -27,7 +27,7 @@ service timeInfo on ep {
         // with that error which eventually is sent to the caller.
         http:Response response = check timeServiceEP->get("/localtime");
 
-        // json and xml are primitive data types! The '.' syntax
+        // json and xml are primitive data types. The '.' syntax
         // is used for invoking local functions.
         json returnValue = check response.getJsonPayload();
 
