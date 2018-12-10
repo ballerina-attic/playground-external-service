@@ -13,7 +13,7 @@ service timeInfo on ep {
         path: "/"
     }
     resource function getTime(http:Caller caller, http:Request req)
-                                                    returns error? {
+                                                returns error? {
 
         // You can define an endpoint to an external service. This
         // endpoint instantiates an HTTP client endpoint.
@@ -25,7 +25,8 @@ service timeInfo on ep {
         // endpoint. '->' indicates request is over a network.
         // If an error is returned, resource function gets returned
         // with that error which eventually is sent to the caller.
-        http:Response response = check timeServiceEP->get("/localtime");
+        http:Response response = check timeServiceEP->
+                                                get("/localtime");
 
         // json and xml are primitive data types. The '.' syntax
         // is used for invoking local functions.
