@@ -39,7 +39,7 @@ service timeInfo on ep {
             source: "Ballerina",
             time: returnValue
         };
-        _ = caller->respond(untaint payload);
+        _ = check caller->respond(untaint payload);
         return;
     }
 }
